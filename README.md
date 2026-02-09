@@ -47,3 +47,8 @@
 ## Flowchart für Anwendung
 <img src="img/Kaffeautomat_flowchart.png" alt="Flowchart Kaffeautomat" width=60%>
 
+## Allgemeines zu CPS
+
+<img src="CPS.png" alt="Flowchart Kaffeautomat" width=60%>
+
+
