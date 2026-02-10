@@ -1,9 +1,17 @@
-from config import MENU
+from config import MENU, resources
 from utils import euro_formater
 from payment import payment_process
 from machine import report, ingredients_ok, handle_change_and_profit, make_drink, deduct_ingredients
+from storage import save_resources, load_resources
 
 def main():
+    # Beim Start, letzten Zustand laden (falls vorhanden):
+    loaded = load_resources(resources)
+    if loaded:
+        print("Letzter gespeicherter Zustand wurde geladen.\n")
+    else:
+        print("Keine gespeicherte Datei gefunden (Standardwerte verwenden).\n")
+    
     while True:
         print("=== Kaffeeautomat ===")
         print("Unsere Getränke: Espresso | Latte | Cappuccino\n")
@@ -11,6 +19,8 @@ def main():
         choice = input("Getränk auswählen: ").lower().strip()
         if choice == "off":
             print("Automat wird ausgeschaltet")
+            save_resources(resources)
+            print("Zustand wurde in 'state.csv' gespeichert.")
             break
         if choice == "report":
             report()
@@ -35,10 +45,10 @@ def main():
             continue
         
         handle_change_and_profit(price, inserted)
-        
         make_drink(choice)
-        
         deduct_ingredients(choice)
+        # Nach erfolgreicher Bestellung Resourcen in CSV speichern:
+        save_resources(resources)
         print("Zutaten wurden aktualisiert. Zurück zur Startsituation...\n")
 
 if __name__ == "__main__":
