@@ -6,7 +6,7 @@ Funktionen, die das Verhalten des Automaten beschreiben:
 - Zubereitung und Verbrauch
 """
 
-from config import resources, MENU
+from config import resources, MENU, MAX_RESOURCES
 from utils import euro_formater
 import time
 
@@ -90,3 +90,17 @@ def deduct_ingredients(drink_key: str) -> None:
     # Für jede Zutat die benötigt wird, ziehen wir die Menge von Ressourcen ab:
     for ing, amount_needed in needs.items():
         resources[ing] -= amount_needed # resources[ing] = resources[ing] - amount_needed
+        
+def fill_water() -> None:
+    resources["water_ml"] = MAX_RESOURCES["water_ml"]
+
+def fill_milk() -> None:
+    resources["milk_ml"] = MAX_RESOURCES["milk_ml"]
+
+def fill_coffee() -> None:
+    resources["coffee_g"] = MAX_RESOURCES["coffee_g"]
+
+def take_money() -> float:
+    taken = resources["money_eur"]
+    resources["money_eur"] = 0.0
+    return taken

@@ -28,3 +28,12 @@ resources = {
     "coffee_g": 75,
     "money_eur": 35.50
 }
+
+MAX_RESOURCES = {
+    "water_ml": 150,
+    "milk_ml": 300,
+    "coffee_g": 75,
+}
+
+# Optionales Codewort für den Wartungsmodus:
+MAINTENANCE_CODE = "admin123"

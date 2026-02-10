@@ -1,9 +1,60 @@
-from config import MENU, resources
+from config import MENU, resources, MAINTENANCE_CODE
 from utils import euro_formater
 from payment import payment_process
-from machine import report, ingredients_ok, handle_change_and_profit, make_drink, deduct_ingredients
+from machine import (
+    report, ingredients_ok, handle_change_and_profit,
+    make_drink, deduct_ingredients, fill_water,
+    fill_milk, fill_coffee, take_money 
+    )
 from storage import save_resources, load_resources
 
+def maintenance_mode(required_code: bool = True) -> None:
+    """
+    Wartungsmodus (Service-Menü)
+    """
+    print("\n--- WARTUNGSMODUS ---")
+    
+    if required_code:
+        code = input("Codewort eingeben: ").strip()
+        if code != MAINTENANCE_CODE:
+            print("Falsches Codewort. Wartungsmodus abgebrochen.\n")
+            return
+        print("Wartungsmodus aktiviert")
+        print("Befehle: fill water | fill milk | fill coffee | take money | report | exit\n")
+        
+        while True:
+            cmd = input("wartungs> ").strip().lower()
+            if cmd == "exit":
+                print("Wartungsmodus verlassen.\n")
+                return
+            
+            elif cmd == "report":
+                report()
+                continue
+            
+            elif cmd == "fill water":
+                fill_water()
+                save_resources(resources)
+                print("Wasser aufgefüllt und gespeichert.\n")
+
+            elif cmd == "fill milk":
+                fill_milk()
+                save_resources(resources)
+                print("Milch aufgefüllt und gespeichert.\n")
+                
+            elif cmd == "fill coffee":
+                fill_coffee()
+                save_resources(resources)
+                print("Kaffee aufgefüllt und gespeichert.\n")
+                
+            elif cmd == "take money":
+                taken = take_money()
+                save_resources(resources)
+                print(f"Geld entnommen: {euro_formater(taken)} (Zustand gespeichert)\n")
+            
+            else:
+                print("Unbekannter Befehl, elaubt ist: fill water | fill milk | fill coffee | take money | report | exit\n")
+            
 def main():
     # Beim Start, letzten Zustand laden (falls vorhanden):
     loaded = load_resources(resources)
@@ -23,7 +74,7 @@ def main():
             print("Zustand wurde in 'state.csv' gespeichert.")
             break
         if choice == "report":
-            report()
+            maintenance_mode(required_code=True)
             continue
         if choice not in MENU:
             print("Ungültige Auswahl. Bitte 'Espresso', 'Latte' oder 'Cappuccino' eingeben.\n")
